@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjt.server.mapper.PeerUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.zjt.server.entity.PeerUser">
+            <id property="no" column="NO" jdbcType="VARCHAR"/>
+            <result property="name" column="NAME" jdbcType="VARCHAR"/>
+            <result property="role" column="ROLE" jdbcType="SMALLINT"/>
+            <result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
+            <result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+            <result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        NO,NAME,ROLE,
+        PASSWORD,PHONE,EMAIL
+    </sql>
+    <insert id="insertStudent" parameterType="com.zjt.server.entity.PeerUser">
+        insert into peer_user values (#{no},#{name},2,#{password},#{phone},#{email})
+    </insert>
+    <insert id="insertTeacher" parameterType="com.zjt.server.entity.PeerUser">
+        insert into peer_user values (#{no},#{name},3,#{password},#{phone},#{email})
+    </insert>
+    <delete id="removeStu" parameterType="string">
+        delete from peer_user where no=#{sno}
+    </delete>
+</mapper>

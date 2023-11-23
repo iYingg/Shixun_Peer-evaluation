@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjt.server.mapper.HomeworkreviseMapper">
+
+    <resultMap id="BaseResultMap" type="com.zjt.server.entity.Homeworkrevise">
+            <id property="hid" column="HID" jdbcType="INTEGER"/>
+            <id property="reviser" column="Reviser" jdbcType="VARCHAR"/>
+            <id property="commitsno" column="CommitSno" jdbcType="VARCHAR"/>
+            <result property="remark" column="Remark" jdbcType="VARCHAR"/>
+            <result property="score" column="Score" jdbcType="INTEGER"/>
+            <result property="status" column="Status" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        HID,Reviser,CommitSno,
+        Remark,Score,Status
+    </sql>
+    <update id="updateByRevise" parameterType="map">
+        update homeworkrevise set Score = #{score} , Remark = #{remark}, `Status` = 'Y' where HID = #{hid} and Reviser = #{reviser} and CommitSno = #{commitsno}
+    </update>
+    <update id="revoke" parameterType="map">
+        update homeworkrevise set Score = null , Remark = null, `Status` = 'N' where HID = #{hid} and Reviser = #{reviser} and CommitSno = #{commitsno}
+    </update>
+
+</mapper>

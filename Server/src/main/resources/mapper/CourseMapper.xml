@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjt.server.mapper.CourseMapper">
+
+    <resultMap id="BaseResultMap" type="com.zjt.server.entity.Course">
+            <id property="cno" column="cno" jdbcType="VARCHAR"/>
+            <result property="cname" column="cname" jdbcType="VARCHAR"/>
+            <result property="hours" column="hours" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        cno,cname,hours
+    </sql>
+    <insert id="insertCourse" parameterType="com.zjt.server.entity.Course">
+        insert into course values (#{cno},#{cname},#{hours})
+    </insert>
+    <delete id="deleteByCno" parameterType="string">
+        delete from course where cno=#{cno}
+    </delete>
+
+
+    <select id="getTnameByCno"  resultType="string" parameterType="string">
+        select name from  peer_user inner join teaching on no=tno WHERE cno = #{cno}
+    </select>
+</mapper>

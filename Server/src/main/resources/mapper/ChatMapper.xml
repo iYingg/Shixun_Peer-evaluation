@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjt.server.mapper.ChatMapper">
+
+    <resultMap id="BaseResultMap" type="com.zjt.server.entity.Chat">
+            <id property="chatid" column="ChatID" jdbcType="INTEGER"/>
+            <result property="sender" column="Sender" jdbcType="VARCHAR"/>
+            <result property="content" column="Content" jdbcType="VARCHAR"/>
+            <result property="date" column="Date" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ChatID,Sender,Content,
+        Date
+    </sql>
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjt.server.mapper.HomeworkcommitMapper">
+
+    <resultMap id="BaseResultMap" type="com.zjt.server.entity.Homeworkcommit">
+            <id property="hid" column="HID" jdbcType="INTEGER"/>
+            <id property="sno" column="Sno" jdbcType="VARCHAR"/>
+            <result property="answer" column="Answer" jdbcType="VARCHAR"/>
+            <result property="commitdate" column="CommitDate" jdbcType="DATE"/>
+            <result property="filename" column="FileName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        HID,Sno,Answer,
+        CommitDate,FileName,Annex
+    </sql>
+    <insert id="insertByhomeworkCommit" parameterType="com.zjt.server.entity.Homeworkcommit">
+        insert into homeworkcommit values (#{hid},#{sno},#{answer},#{commitdate},#{annex},#{filename})
+    </insert>
+    <delete id="deleteByhidandSno" parameterType="map">
+        delete from homeworkcommit where sno =#{sno} and hid = #{hid}
+    </delete>
+</mapper>

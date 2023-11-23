@@ -17,6 +17,10 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App);
 
+
+
+
+
 app.use(ElementPlus, {
     locale: zhCn,
 })

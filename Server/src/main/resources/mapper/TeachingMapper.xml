@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjt.server.mapper.TeachingMapper">
+
+    <resultMap id="BaseResultMap" type="com.zjt.server.entity.Teaching">
+            <id property="tno" column="tno" jdbcType="VARCHAR"/>
+            <id property="cno" column="cno" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        tno,cno
+    </sql>
+    <insert id="insertteacheing" parameterType="com.zjt.server.entity.Teaching">
+        insert into teaching values (#{tno},#{cno})
+    </insert>
+
+    <delete id="deleteByCno" parameterType="string">
+        delete from teaching where cno = #{cno}
+    </delete>
+
+    <select id="getTnoByCno" resultType="java.lang.String" parameterType="string">
+        select tno from teaching where cno = #{cno}
+    </select>
+</mapper>

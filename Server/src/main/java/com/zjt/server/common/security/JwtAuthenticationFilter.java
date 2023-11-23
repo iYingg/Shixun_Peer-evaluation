@@ -34,7 +34,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private static final String URL_WHITELIST[] = {
             "/test/login",
-            "image/userAvatar/**"
+            "image/userAvatar/**",
+            "/activ/publishhomework/**"
     };
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);

@@ -8,6 +8,28 @@ public class PageBean {
 
     private String userNo;//登陆用户的no
 
+    private String cno;//选择课程信息
+
+    private String HID;//作业号
+
+
+
+    public String getHID() {
+        return HID;
+    }
+
+    public void setHID(String HID) {
+        this.HID = HID;
+    }
+
+    public String getCno() {
+        return cno;
+    }
+
+    public void setCno(String cno) {
+        this.cno = cno;
+    }
+
     public String getUserNo() {
         return userNo;
     }

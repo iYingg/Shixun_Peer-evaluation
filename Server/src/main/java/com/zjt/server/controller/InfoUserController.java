@@ -66,7 +66,7 @@ public class InfoUserController {
     public R findById(@PathVariable(value = "no")String no){
         PeerUser peerUser = peerUserService.getByUsername(no);
         Map<String,Object> map=new HashMap<>();
-        map.put("peerUSer",peerUser);
+        map.put("peerUser",peerUser);
         return R.ok(map);
     }
 
@@ -84,4 +84,21 @@ public class InfoUserController {
             return R.error();
         }
     }
+
+    /**
+     * 验证Tno是否存在
+      * @param peerUser
+     * @return
+     */
+    @PostMapping("/checkTno")
+    public R checkTno(@RequestBody PeerUser peerUser){
+
+        if(peerUserService.getByUsername(peerUser.getNo()).getRole().equals(Integer.valueOf(3))){
+
+            return R.ok();
+        }else{
+            return R.error();
+        }
+    }
+
 }

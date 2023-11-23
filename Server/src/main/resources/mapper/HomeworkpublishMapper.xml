@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjt.server.mapper.HomeworkpublishMapper">
+
+    <resultMap id="BaseResultMap" type="com.zjt.server.entity.Homeworkpublish">
+            <id property="hid" column="HID" jdbcType="INTEGER"/>
+            <result property="htitle" column="Htitle" jdbcType="VARCHAR"/>
+            <result property="hcontent" column="Hcontent" jdbcType="VARCHAR"/>
+            <result property="publisher" column="Publisher" jdbcType="VARCHAR"/>
+            <result property="cno" column="Cno" jdbcType="VARCHAR"/>
+            <result property="deadline" column="Deadline" jdbcType="DATE"/>
+            <result property="filename" column="Filename" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        HID,Htitle,Hcontent,
+        Publisher,Cno,Deadline,
+        Filename,Annex
+    </sql>
+</mapper>

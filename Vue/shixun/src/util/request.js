@@ -1,6 +1,7 @@
 // 引入axios
 import axios from 'axios';
 import store from '@/store'
+import {ElMessage} from "element-plus";
 
 let baseUrl="http://localhost:80/";
 // 创建axios实例
@@ -11,6 +12,7 @@ const httpService = axios.create({
     // 请求超时时间
     timeout: 3000
 });
+
 
 
 
@@ -28,6 +30,7 @@ httpService.interceptors.request.use(function (config) {
     // }
    // console.log("store="+store.getters.GET_TOKEN)
     config.headers.token=sessionStorage.getItem("token")
+
     return config;
 }, function (error) {
     // 对请求错误做些什么
@@ -74,7 +77,7 @@ export function post(url, params = {}) {
         httpService({
             url: url,
             method: 'post',
-            data: params
+            data: params,
         }).then(response => {
             console.log(response)
             resolve(response);
@@ -105,6 +108,110 @@ export function fileUpload(url, params = {}) {
     });
 }
 
+
+/**
+ *
+ * @param url
+ * @param hid
+ * @param filename
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+export function Download(url, hid,filename) {
+    return new Promise((resolve, reject) => {
+        httpService({
+            url: url+''+hid,
+            method: 'get',
+            responseType: 'blob',
+            headers:{
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        }).then(response => {
+            console.log(response);
+            if (!response || !response.data) {
+                ElMessage({
+                    type: 'error',
+                    message: '失败!'
+                })
+                return;
+            }
+            let blob = new Blob([response.data]);//response.data为后端传的流文件
+            //console.log(filename+'');
+            let downloadFilename = filename+'';//设置导出的文件名
+            //console.log(downloadFilename);
+            //谷歌,火狐等浏览器
+            let objectURL = window.URL.createObjectURL(blob);
+            let downloadElement = document.createElement("a");
+            downloadElement.style.display = "none";
+            downloadElement.href = objectURL;
+            downloadElement.download = downloadFilename;
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(url);
+
+            ElMessage({
+                type: 'success',
+                message: '下载成功!'
+            })
+        }).catch(err => {
+            ElMessage({
+                type: 'error',
+                message: '失败!'
+            })
+        })
+    });
+}
+
+export function Download2(url,hid, Sno, filename) {
+    return new Promise((resolve, reject) => {
+        httpService({
+            url: url+''+hid+'/'+Sno,
+            method: 'get',
+            responseType: 'blob',
+            headers:{
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        }).then(response => {
+            console.log(response);
+            if (!response || !response.data) {
+                ElMessage({
+                    type: 'error',
+                    message: '失败!'
+                })
+                return;
+            }
+            let blob = new Blob([response.data]);//response.data为后端传的流文件
+            //console.log(filename+'');
+            let downloadFilename = filename+'';//设置导出的文件名
+            //console.log(downloadFilename);
+            //谷歌,火狐等浏览器
+            let objectURL = window.URL.createObjectURL(blob);
+            let downloadElement = document.createElement("a");
+            downloadElement.style.display = "none";
+            downloadElement.href = objectURL;
+            downloadElement.download = downloadFilename;
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(url);
+
+            ElMessage({
+                type: 'success',
+                message: '下载成功!'
+            })
+        }).catch(err => {
+            ElMessage({
+                type: 'error',
+                message: '失败!'
+            })
+        })
+    });
+}
+
+
+
+
 export function getServerUrl(){
     return baseUrl;
 }
@@ -113,5 +220,8 @@ export default {
     get,
     post,
     fileUpload,
+    //fileDownload,
+    Download2,
+    Download,
     getServerUrl
 }

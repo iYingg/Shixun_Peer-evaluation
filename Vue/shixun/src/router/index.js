@@ -17,7 +17,11 @@ const routes = [
         name: '主页',
         component: () => import('../views/index/index')
       },
-
+      // {
+      //   path: '/home/activ/assignCourse',
+      //   name:'发布作业',
+      //   component:()=> import('../views/activ/assignCourse')
+      // }
     ]
   },
   {

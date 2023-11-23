@@ -68,9 +68,11 @@ public class InfoStudentController {
     }
 
 
-
-
-
+    /**
+     * 删除学生
+     * @param sno
+     * @return
+     */
     @Transactional
     @PostMapping("/delete")
     public R delete(@RequestBody String sno){

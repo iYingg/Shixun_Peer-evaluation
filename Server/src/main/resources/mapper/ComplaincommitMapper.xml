@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjt.server.mapper.ComplaincommitMapper">
+
+    <resultMap id="BaseResultMap" type="com.zjt.server.entity.Complaincommit">
+            <id property="complainid" column="ComplainID" jdbcType="INTEGER"/>
+            <result property="sno" column="Sno" jdbcType="VARCHAR"/>
+            <result property="tno" column="Tno" jdbcType="VARCHAR"/>
+            <result property="date" column="Date" jdbcType="DATE"/>
+            <result property="content" column="Content" jdbcType="VARCHAR"/>
+            <result property="respond" column="Respond" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ComplainID,Sno,Tno,
+        Date,Content,Respond
+    </sql>
+</mapper>

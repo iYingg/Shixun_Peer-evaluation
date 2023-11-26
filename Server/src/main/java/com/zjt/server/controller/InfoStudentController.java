@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjt.server.entity.PageBean;
 import com.zjt.server.entity.PeerUser;
 import com.zjt.server.entity.R;
+import com.zjt.server.entity.SysUserRole;
 import com.zjt.server.service.PeerUserService;
+import com.zjt.server.service.SysUserRoleService;
 import com.zjt.server.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,9 @@ public class InfoStudentController {
 
     @Autowired
     private PeerUserService peerUserService;
+
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
 
     /**
      * 学生信息列表
@@ -61,6 +66,10 @@ public class InfoStudentController {
         System.out.println(peerUser.toString());
         if(peerUser.getId()==0 || peerUser.getId()==-1){
             peerUserService.insertStudent(peerUser);
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(Long.parseLong(peerUser.getNo()));
+            sysUserRole.setRoleId(3L);
+            sysUserRoleService.saveOrUpdate(sysUserRole);
         }else{
             peerUserService.updateById(peerUser);
         }

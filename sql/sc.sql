@@ -1,0 +1,10 @@
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('JW1002', '0000');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('KJ1001', '0000');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('KJ1002', '0000');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('KJ1004', '0000');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('SX1001', '0000');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('JW1002', '21301059');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('KJ1002', '21301059');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('KJ1004', '21301059');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('RC1003', '21301059');
+INSERT INTO `sc` (`cno`, `sno`) VALUES ('SX1001', '21301059');

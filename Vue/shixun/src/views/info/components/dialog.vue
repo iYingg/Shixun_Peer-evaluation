@@ -133,7 +133,8 @@ const formRef=ref(null)
 const initFormData=async(no)=>{
     const res=await requestUtil.get("info/user/"+no);
     console.log(res.data);
-    form.value=res.data.peerUSer;
+    form.value=res.data.peerUser;
+
 }
 
 

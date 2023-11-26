@@ -49,6 +49,15 @@ public class R extends HashMap<String, Object> {
         super.put(key, value);
         return this;
     }
+
+
+    public String getStatus() {
+        return error().get("code").toString();
+    }
+
+    public ThreadLocal<Object> getData() {
+        return null;
+    }
 }
 
 

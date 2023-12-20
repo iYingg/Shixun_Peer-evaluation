@@ -140,6 +140,8 @@ public class ActivCourseStuController {
         Map<String,Object> resultMap=new HashMap<>();
         resultMap.put("courseList",courseVOList);
         resultMap.put("total",pageResult.getTotal());
+
+
         return R.ok(resultMap);
     }
 

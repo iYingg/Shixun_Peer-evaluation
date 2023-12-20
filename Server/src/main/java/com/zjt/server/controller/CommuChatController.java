@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjt.server.entity.*;
 import com.zjt.server.service.ChatService;
+import com.zjt.server.util.DateForm;
 import com.zjt.server.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/commu/chat")
-public class ChatController {
+public class CommuChatController {
 
 
     @Autowired
@@ -45,8 +46,13 @@ public class ChatController {
         }
 
         List<Chat> chatList = pageResult.getRecords();
+        List<Chat> chatList2 = new ArrayList<>();
+        for(Chat chat : chatList){
+            chat.setDate2(DateForm.DatetoString(chat.getDate()));
+            chatList2.add(chat);
+        }
         Map<String,Object> resultMap=new HashMap<>();
-        resultMap.put("chatList",chatList);
+        resultMap.put("chatList",chatList2);
         resultMap.put("total",pageResult.getTotal());
         return R.ok(resultMap);
     }
@@ -54,19 +60,18 @@ public class ChatController {
 
     /**
      * 发送
-     * @param sender
-     * @param content
+     * @param chat
      * @return
      */
     @PostMapping("/send")
-    public R send(@RequestParam String sender, @RequestParam String content){
-        chatService.send(sender,content);
+    public R send(@RequestBody Chat chat){
+        chatService.send(chat.getSender(),chat.getContent());
         return R.ok();
     }
 
     @PostMapping("/delete")
-    public R delete(@RequestParam int hid){
-        chatService.delete(hid);
+    public R delete(@RequestBody Chat chat){
+        chatService.delete(chat.getChatid());
         return R.ok();
     }
 }

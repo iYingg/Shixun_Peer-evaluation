@@ -84,7 +84,7 @@ const initselect= async ()=>{
  */
 const initUserList=async()=>{
     queryForm.value.userNo = JSON.parse(sessionStorage.getItem("userInfo")).no;
-    const res=await requestUtil.post("activ/courseStu/listChosen",queryForm.value);
+    const res=await requestUtil.post("activ/revisehomework/listChosen",queryForm.value);
     tableData.value=res.data.courseList;
     total.value=res.data.total;
 }

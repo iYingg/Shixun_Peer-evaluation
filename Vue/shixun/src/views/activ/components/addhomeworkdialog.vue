@@ -220,7 +220,6 @@ watch(
 
 const initFormData=async(hid)=>{
     const res=await requestUtil.get("activ/publishhomework/"+hid);
-    console.log(res.data);
     form.value=res.data.homeworkpublish;
 }
 

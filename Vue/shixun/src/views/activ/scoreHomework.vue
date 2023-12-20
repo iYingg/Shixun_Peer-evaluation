@@ -19,22 +19,8 @@
                     >下载附件</el-button>
                 </el-tooltip>
             </div>
-            <div class="buttonanswer">
-                <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    :content="answerfilename==null||answerfilename==''?'无附件':answerfilename"
-                    placement="bottom"
-                >
-                    <el-button
-                        @click="download2(hid,answerfilename)"
-                        style="float: right"
-                        :disabled="answerfilename==null||answerfilename==''?true:false"
-                    >下载附件</el-button>
-                </el-tooltip>
-            </div>
             <div class="answer" style="padding-top: 50px">
-                <el-divider content-position="left">学生答案</el-divider>
+                <el-divider content-position="left">您的答案</el-divider>
                 <el-text style="font-size: medium;padding-right: 20px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{answer2}}</el-text>
             </div>
             <div class="button">
@@ -48,7 +34,7 @@
                         @click="download2(hid,fileName2)"
                         style="float: right"
                         :disabled="fileName2==null||fileName2==''?true:false"
-                    >下载答案</el-button>
+                    >下载附件</el-button>
                 </el-tooltip>
             </div>
             <div class="divider">
@@ -57,27 +43,18 @@
                 </el-divider>
             </div>
         </div>
-        <el-form
-            ref="formRef"
-            :model="form2"
-            :rules="rules"
-            label-width="70px"
-            class="demo-ruleForm"
-            status-icon
-        >
-            <el-form-item label="评语：" prop="remark">
-                <el-input v-model="form2.remark" type="textarea" placeholder="在此输入评语"/>
-            </el-form-item>
-            <el-form-item label="打分：" prop="score">
-                <el-input v-model="form2.score" />
-            </el-form-item>
-
-
-        </el-form>
-
-
-        <el-button class="submit-btn" @click="submit">提交</el-button>
+        <el-table class="table" :data="tableData2" stripe style="width: 100%" tooltip-effect="light" >
+            <el-table-column prop="no" label="序号" width="180" >
+                <template v-slot="ss">
+                    <el-text>Student&nbsp;{{ss.row.no}}</el-text>
+                </template>
+            </el-table-column>
+            <el-table-column prop="remark" label="评语" width="300" show-overflow-tooltip/>
+            <el-table-column prop="score" label="得分" width="150" show-overflow-tooltip/>
+        </el-table>
+        <el-text class="final" style="font-size: large;font-weight: bold"><br><br>最终得分：{{finalsocre}}</el-text>
     </div>
+
 </template>
 
 <script setup>
@@ -96,119 +73,68 @@ let cno = sessionStorage.getItem("cno")
 
 const answer2 = ref('22')
 
-const file = ref(null)
+const tableData2=ref([]);
 
-const form = ref({
-    answer:'',
-    sno:'',
-    hid:0
+const finalsocre = ref(0)
+
+const queryForm=ref({
+    query:'',
+    pageNum:1,
+    pageSize:10,
+    userNo:'',
+    cno:'',
+    hid:''
 })
-const formRef = ref(null)
+const total=ref(0)
+const qcno = ref(sessionStorage.getItem("cno"))
+const qhid = ref(sessionStorage.getItem("hid"));
+const initTable=async()=>{
+    queryForm.value.userNo = JSON.parse(sessionStorage.getItem("userInfo")).no;
+    let cno = qcno.value;
+    //console.log(cno);
+    queryForm.value.cno = cno;
+    queryForm.value.hid = qhid.value;
+    //console.log(queryForm);
+    const res=await requestUtil.post("activ/revisehomework/listremark",queryForm.value);
+    tableData2.value=res.data.homeworkreviseList;
+    total.value=res.data.total;
+}
+initTable();
 
+const handleSizeChange=(pageSize)=>{
+    queryForm.value.pageNum=1;
+    queryForm.value.pageSize=pageSize;
+    initTable();
+}
 
-
-const rules=ref(
-    {
-        remark: [{ required: true, message: "请输入评语", trigger: "blur" }],
-        score:[{required: true, message: "请输入得分", trigger: "blur"},
-            { type:'number', message: "请输入正确数字", trigger: "blur"},
-            {validator: (rule, value, callback) => {
-                    const number = parseInt(value);
-                    if (isNaN(number) || number < 1 || number > 100) {
-                        callback(new Error('请输入1-100之间的数字'));
-                    } else {
-                        callback();
-                    }
-                },
-                trigger: 'blur'
-            }]
-    }
-)
-
-const form2=ref({
-    remark:'',
-    score:0
-})
-
+const handleCurrentChange=(pageNum)=>{
+    queryForm.value.pageNum=pageNum;
+    initTable();
+}
 
 const send=ref({
     hid:0,
     commitsno:''
 })
-const answerfilename = ref('')
 
 const fileName2 = ref('')
 const getAnswer = async ()=>{
     send.value.hid = parseInt(hid);
-    send.value.commitsno = sessionStorage.getItem("commitsno")
+    send.value.commitsno = JSON.parse(sessionStorage.getItem("userInfo")).no;
     let result = await requestUtil.post("activ/revisehomework/getAnswer",send.value)
     let data=result.data;
     if(data.code==200){
         answer2.value = data.homeworkcommit.answer
         fileName2.value = data.homeworkcommit.filename
-
+        finalsocre.value = data.homeworkcommit.finalscore
     }else{
         ElMessage.error(data.msg);
     }
-    const res=await requestUtil.get("activ/publishhomework/"+parseInt(hid));
-    answerfilename.value = res.data.homeworkpublish.answerfilename
-
 }
 
 getAnswer();
 
 
-
-
-
-
-const editableTabsValue = ref(store.state.editableTabsValue)
-const editableTabs = ref(store.state.editableTabs)
-
-const submit=async ()=> {
-
-    // formRef.value.validate(async(valid)=>{
-    //     if(valid){
-            let formData = new FormData();
-            formData.append('reviser',JSON.parse(sessionStorage.getItem("userInfo")).no);
-            formData.append('commitsno',sessionStorage.getItem("commitsno"));
-            formData.append('hid',parseInt(sessionStorage.getItem("hid")));
-            formData.append('score',form2.value.score);
-            formData.append('remark',form2.value.remark);
-            //console.log(formData)
-            let result=await requestUtil.fileUpload("activ/revisehomework/revise",formData);
-            let data=result.data;
-            if(data.code==200){
-                ElMessage.success("提交成功!")
-                const tabs = editableTabs.value
-                let activeName = editableTabsValue.value
-                let targetName = `/home/activ/gradeCourse${cno}${hid}/grade`;
-                if (activeName === targetName) {
-                    tabs.forEach((tab, index) => {
-                        if (tab.name === targetName) {
-                            const nextTab = tabs[index + 1] || tabs[index - 1]
-                            if (nextTab) {
-                                activeName = nextTab.name
-                            }
-                        }
-                    })
-                }
-                editableTabsValue.value = activeName
-                editableTabs.value = tabs.filter((tab) => tab.name !== targetName)
-
-                store.state.editableTabsValue = editableTabsValue.value;
-                store.state.editableTabs = editableTabs.value
-
-                await router.push({path: activeName})
-
-            }else{
-                ElMessage.error(data.msg);
-            }
-    //     }else{
-    //         console.log("fail")
-    //     }
-    // })
-}
 
 
 const download=async ()=>{
@@ -218,7 +144,6 @@ const download=async ()=>{
             type: 'success',
             message: '下载成功!'
         })
-        await initUserList();
     }else{
         ElMessage({
             type: 'error',
@@ -236,7 +161,7 @@ const download2=async (hid,fileName)=>{
             type: 'success',
             message: '下载成功!'
         })
-        await initUserList();
+
     }else{
         ElMessage({
             type: 'error',
@@ -244,8 +169,6 @@ const download2=async (hid,fileName)=>{
         })
     }
 }
-
-
 </script>
 
 <style>
@@ -314,7 +237,7 @@ const download2=async (hid,fileName)=>{
     cursor: pointer;
 }
 
-.submit-btn:hover {
-    background-color: darkblue;
+.final{
+
 }
 </style>

@@ -14,6 +14,9 @@ import lombok.Data;
 @TableName(value ="homeworkrevise")
 @Data
 public class Homeworkrevise implements Serializable {
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     /**
      * 作业ID
      */

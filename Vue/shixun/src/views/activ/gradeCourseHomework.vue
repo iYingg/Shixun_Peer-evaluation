@@ -257,23 +257,7 @@ const gradehomework=(commitsno)=>{
 
 
 
-const download=async (hid,fileName)=>{
-    //console.log(hid);
-    //console.log(fileName);
-    let res = await requestUtil.Download("/activ/publishhomework/downhomework",hid,fileName)
-    if(res.data.code==200){
-        ElMessage({
-            type: 'success',
-            message: '下载成功!'
-        })
-        await initUserList();
-    }else{
-        ElMessage({
-            type: 'error',
-            message: res.data.msg,
-        })
-    }
-}
+
 const handleDelete=async (commitsno)=>{
     send.value.hid = parseInt(qhid.value);
     send.value.reviser = JSON.parse(sessionStorage.getItem("userInfo")).no;

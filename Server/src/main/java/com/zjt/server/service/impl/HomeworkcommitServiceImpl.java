@@ -50,6 +50,7 @@ public class HomeworkcommitServiceImpl extends ServiceImpl<HomeworkcommitMapper,
             homeworkcommit.setFilename("");
             homeworkcommit.setAnnex(new byte[0]);
         }
+        homeworkcommit.setIsallocate("N");
         homeworkcommitMapper.insertByhomeworkCommit(homeworkcommit);
     }
 
@@ -73,6 +74,11 @@ public class HomeworkcommitServiceImpl extends ServiceImpl<HomeworkcommitMapper,
         wrapper.eq("HID",homeworkrevise.getHid())
                 .eq("Sno",homeworkrevise.getCommitsno());
         return this.getOne(wrapper);
+    }
+
+    @Override
+    public void updateFinalscore(Integer hid, String sno, Integer finalscore) {
+        homeworkcommitMapper.updateFinalscore(hid,sno,finalscore);
     }
 }
 

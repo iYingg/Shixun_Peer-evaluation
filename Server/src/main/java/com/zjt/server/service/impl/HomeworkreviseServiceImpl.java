@@ -30,6 +30,11 @@ public class HomeworkreviseServiceImpl extends ServiceImpl<HomeworkreviseMapper,
     public void revoke(int hid, String reviser, String commitsno) {
         homeworkreviseMapper.revoke(hid,reviser,commitsno);
     }
+
+    @Override
+    public void insert(Homeworkrevise homeworkrevise) {
+        homeworkreviseMapper.insertByHomeworkrevise(homeworkrevise.getHid(),homeworkrevise.getReviser(),homeworkrevise.getCommitsno());
+    }
 }
 
 

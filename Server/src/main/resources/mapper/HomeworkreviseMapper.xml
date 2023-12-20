@@ -17,6 +17,9 @@
         HID,Reviser,CommitSno,
         Remark,Score,Status
     </sql>
+    <insert id="insertByHomeworkrevise">
+        insert into homeworkrevise values (#{hid},#{reviser},#{commitsno},null,null,'N',null)
+    </insert>
     <update id="updateByRevise" parameterType="map">
         update homeworkrevise set Score = #{score} , Remark = #{remark}, `Status` = 'Y' where HID = #{hid} and Reviser = #{reviser} and CommitSno = #{commitsno}
     </update>

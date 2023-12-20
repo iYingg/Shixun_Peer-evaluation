@@ -15,10 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/activ/commithomework")
@@ -98,6 +95,22 @@ public class ActivHomeworkCommitController {
                     .eq("Reviser",currentUserNo);
             homeworkVO.setAllrevise(homeworkreviseService.count(wrapper4));
             homeworkVO.setRevisestatus(" " + homeworkVO.getHasrevise()+" / "+homeworkVO.getAllrevise());
+
+
+            //判断是否在互评截止一周内完成互评
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE,-7);//当前时间减去一周，即一周前的时间
+            Date date2 = calendar.getTime();
+            QueryWrapper<Homeworkpublish> wrapper5 = new QueryWrapper<>();
+            wrapper5.eq("HID",homeworkpublish.getHid());
+            Homeworkpublish homeworkpublish1 = homeworkpublishService.getOne(wrapper5);
+            if(homeworkpublish1.getDeadline().getTime()<date2.getTime()){
+                homeworkVO.setIsLaterevise("Y");
+            }else {
+                homeworkVO.setIsLaterevise("N");
+            }
             homeworkpublishList2.add(homeworkVO);
 
         }
@@ -142,6 +155,14 @@ public class ActivHomeworkCommitController {
             homeworkpublish.setNo(no);
             no++;
             homeworkpublish.setIsCommit("N");
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            if(homeworkpublish.getDeadline().getTime()<calendar.getTime().getTime()){
+                homeworkpublish.setIsLate("Y");
+            }else {
+                homeworkpublish.setIsLate("N");
+            }
             homeworkpublishList2.add(homeworkpublish);
         }
         Map<String,Object> resultMap=new HashMap<>();
@@ -202,6 +223,14 @@ public class ActivHomeworkCommitController {
                     homeworkpublish.setIsCommit("Y");
                     break;
                 }
+            }
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            if(homeworkpublish.getDeadline().getTime()<calendar.getTime().getTime()){
+                homeworkpublish.setIsLate("Y");
+            }else {
+                homeworkpublish.setIsLate("N");
             }
             homeworkpublishList2.add(homeworkpublish);
         }

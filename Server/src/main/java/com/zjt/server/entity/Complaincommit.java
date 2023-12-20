@@ -18,7 +18,7 @@ public class Complaincommit implements Serializable {
     /**
      * 申诉ID
      */
-    @TableId(value = "ComplainID")
+    @TableId(value = "ComplainID" , type = IdType.AUTO)
     private Integer complainid;
 
     /**
@@ -30,8 +30,8 @@ public class Complaincommit implements Serializable {
     /**
      * 收到申诉的老师ID
      */
-    @TableField(value = "Tno")
-    private String tno;
+    @TableField(value = "Cno")
+    private String cno;
 
     /**
      * 提交申诉的时间
@@ -53,4 +53,7 @@ public class Complaincommit implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    @TableField(exist = false)
+    private String date2;
 }

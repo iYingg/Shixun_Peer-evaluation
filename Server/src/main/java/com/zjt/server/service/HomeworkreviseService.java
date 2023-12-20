@@ -13,4 +13,6 @@ public interface HomeworkreviseService extends IService<Homeworkrevise> {
     void updateRevise(int hid, String resiver, String commitsno, int score, String remark);
 
     void revoke(int hid, String reviser, String commitsno);
+
+    void insert(Homeworkrevise homeworkrevise);
 }

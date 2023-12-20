@@ -19,6 +19,9 @@
     <insert id="insertByhomeworkCommit" parameterType="com.zjt.server.entity.Homeworkcommit">
         insert into homeworkcommit values (#{hid},#{sno},#{answer},#{commitdate},#{annex},#{filename})
     </insert>
+    <update id="updateFinalscore">
+        update homeworkcommit set finalscore = #{finalscore} where hid = #{hid} and sno = #{sno}
+    </update>
     <delete id="deleteByhidandSno" parameterType="map">
         delete from homeworkcommit where sno =#{sno} and hid = #{hid}
     </delete>

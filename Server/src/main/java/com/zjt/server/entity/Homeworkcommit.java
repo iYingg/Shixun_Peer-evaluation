@@ -52,6 +52,12 @@ public class Homeworkcommit implements Serializable {
     @TableField(value = "Annex")
     private byte[] annex;
 
+    @TableField(value = "FinalScore")
+    private Integer finalscore;
+
+    @TableField(value = "isAllocate")
+    private String isallocate;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

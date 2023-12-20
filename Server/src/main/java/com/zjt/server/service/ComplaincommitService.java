@@ -10,4 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ComplaincommitService extends IService<Complaincommit> {
 
+    void updaterespond(Integer complainid);
+
+    void updaterespond2(Integer complainid);
 }

@@ -48,11 +48,19 @@
                             <el-button type="danger" >撤回</el-button>
                         </template>
                     </el-popconfirm>
+                    <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="scope.row.isLate=='Y'?'已截止无法提交':'前往提交作业'"
+                        placement="bottom"
+                    >
                     <el-button
                         type="success"
                         v-if="scope.row.isCommit=='N'"
+                        :disabled="scope.row.isLate=='Y'?true:false"
                         @click="submithomework(scope.row.hid,scope.row.htitle,scope.row.hcontent,scope.row.filename,scope.row.deadline2)"
                     >提交</el-button>
+                    </el-tooltip>
                 </template>
             </el-table-column>
         </el-table>

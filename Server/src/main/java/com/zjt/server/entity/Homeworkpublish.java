@@ -103,6 +103,7 @@ public class Homeworkpublish implements Serializable {
     @TableField(exist = false)
     private String isCommit;
 
-
+    @TableField(exist = false)
+    private String isLate;
 
 }

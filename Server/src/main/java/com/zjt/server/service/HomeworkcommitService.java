@@ -23,4 +23,6 @@ public interface HomeworkcommitService extends IService<Homeworkcommit> {
     boolean downhomework(int hid,String Sno, HttpServletResponse httpServletResponse) throws UnsupportedEncodingException;
 
     Homeworkcommit getAnswer(Homeworkrevise homeworkrevise);
+
+    void updateFinalscore(Integer hid, String sno, Integer finalscore);
 }

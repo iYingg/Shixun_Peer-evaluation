@@ -12,6 +12,8 @@ public class PageBean {
 
     private String HID;//作业号
 
+    private String sno;//学生号
+
 
 
     public String getHID() {

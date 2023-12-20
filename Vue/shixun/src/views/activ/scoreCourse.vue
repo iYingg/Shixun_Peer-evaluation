@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <h1 class="title">{{qcname}}:&nbsp;已提交作业列表: </h1>
+        <h1 class="title">{{qcname}}:&nbsp;作业列表: </h1>
         <el-row :gutter="20" class="header">
             <el-col :span="7">
                 <el-input placeholder="请输入作业标题..." v-model="queryForm.query" clearable
@@ -9,50 +9,42 @@
             <el-button type="primary"  @click="initUserList">搜索</el-button>
 
         </el-row>
-        <el-table :data="tableData" stripe style="width: 100%" tooltip-effect="light">
-            <el-table-column prop="no" label="序号" width="70" />
-            <el-table-column prop="htitle" label="作业标题" width="170" show-overflow-tooltip/>
+        <el-table class="table" :data="tableData" stripe style="width: 100%" tooltip-effect="light" >
+            <el-table-column prop="no" label="序号" width="120" />
+            <el-table-column prop="htitle" label="作业标题" width="250" show-overflow-tooltip/>
 
-            <el-table-column prop="answer" label="您的答案" width="230" show-overflow-tooltip/>
-            <el-table-column prop="filename2" label="附件名" width="200" show-overflow-tooltip>
-                <template v-slot="scope2">
-                    <el-text v-if="scope2.row.filename2==null||scope2.row.filename2==''">无附件</el-text>
-                    <el-text v-else-if="scope2.row.filename2!=null">{{ scope2.row.filename2 }}</el-text>
+            <el-table-column prop="deadline2" label="Deadline" width="250" />
+            <el-table-column prop="isCommit" label="提交状态" width="230" show-overflow-tooltip>
+                <template v-slot="ss">
+                    <el-text v-if="ss.row.isCommit == 'Y'">
+                        已提交
+                    </el-text>
+                    <el-text v-else>
+                        未提交
+                    </el-text>
                 </template>
             </el-table-column>
-            <el-table-column prop="commitdate" label="提交日期" width="120" />
-            <el-table-column prop="deadline2" label="Deadline" width="120" />
-            <el-table-column  label="互评情况" width="200" >
+            <el-table-column  label="互评情况" width="250" >
                 <template v-slot="scope1">
                     <el-text v-if="scope1.row.unrevise!=0">有&nbsp;{{scope1.row.unrevise}}&nbsp;份作业需批改&nbsp;&nbsp;{{scope1.row.revisestatus}}</el-text>
-                    <el-text v-else>已全部批改！&nbsp;&nbsp;{{scope1.row.revisestatus}}</el-text>
+                    <el-text v-else-if="scope1.row.isCommit == 'N'">--</el-text>
+                    <el-text v-else>已全部批改！</el-text>
                 </template>
             </el-table-column>
-            <el-table-column prop="hid" label="操作" width="200" >
+            <el-table-column prop="hid" label="操作" width="230" >
                 <template v-slot="scope" >
-                    <el-tooltip
-                            class="box-item"
-                            effect="dark"
-                            :content="scope.row.filename2==null||scope.row.filename2==''?'无附件':scope.row.filename2"
-                            placement="bottom"
-                    >
-                        <el-button
-                                type="primary"
-                                @click="download(scope.row.hid,scope.row.filename2)"
-                                :disabled="scope.row.filename2==null||scope.row.filename2==''?true:false"
-                        >下载附件</el-button>
-                    </el-tooltip>
                     <el-tooltip
                         class="box-item"
                         effect="dark"
-                        :content="scope.row.isLaterevise=='Y'?'已截止无法提交':'前往提交作业'"
+                        :content="scope.row.isCommit=='N'?'未提交作业':'前往查看成绩'"
                         placement="bottom"
+
                     >
-                    <el-button
-                        type="success"
-                        :disabled="scope.row.isLaterevise=='Y'?true:false"
-                        @click="revisehomework(scope.row.hid,scope.row.htitle,scope.row.hcontent,scope.row.filename,scope.row.deadline2)"
-                    >进入</el-button>
+                        <el-button
+                            type="success"
+                            :disabled="scope.row.isCommit=='N'?true:false"
+                            @click="scorehomework(scope.row.hid,scope.row.htitle,scope.row.hcontent,scope.row.filename,scope.row.deadline2)"
+                        >查看</el-button>
                     </el-tooltip>
                 </template>
             </el-table-column>
@@ -67,7 +59,7 @@
                 @current-change="handleCurrentChange"
         />
     </div>
-    <el-text type="danger" style="font-size: large;padding-left: 20px;padding-top: 100px">请在作业提交截止日期后一周内完成互批！</el-text>
+
 
 </template>
 <script setup>
@@ -108,7 +100,8 @@ const initUserList=async()=>{
     //console.log(cno);
     queryForm.value.cno = cno;
     //console.log(queryForm);
-    const res=await requestUtil.post("activ/commithomework/list",queryForm.value);
+    const res=await requestUtil.post("activ/score/listHomework",queryForm.value);
+
     //console.log(res.data.homeworkpublishList);
     tableData.value=res.data.homeworkpublishList;
     total.value=res.data.total;
@@ -135,31 +128,29 @@ const send=ref({
 });
 
 
-
-const revisehomework=(hid,htitle,hcontent,fileName,deadline2)=>{
+const scorehomework=(hid,htitle,hcontent,fileName,deadline2)=>{
     sessionStorage.setItem("hid",hid);
     sessionStorage.setItem("htitle",htitle);
     sessionStorage.setItem("hcontent",hcontent)
     sessionStorage.setItem("fileName",fileName)
     sessionStorage.setItem("deadline2",deadline2)
-
     let cname = sessionStorage.getItem("cname")
     let cno = sessionStorage.getItem("cno")
     let route = {
-        name:'互评作业:'+ cname +':'+ hid,
-        path:`/home/activ/gradeCourse${cno}${hid}`,
+        name:'成绩:'+ cname +':'+ hid,
+        path:`/home/activ/scoreCourse${cno}${hid}`,
         meta:{
-            parentName:'互评作业:'+cname
+            parentName:'成绩:'+cname
         },
     }
 
-    route.component = () => import('@/views/activ/gradeCourseHomework.vue');
+    route.component = () => import('@/views/activ/scoreHomework.vue');
 
     router.addRoute('首页',route);
 
 
     router.push({
-        path:`/home/activ/gradeCourse${cno}${hid}`,
+        path:`/home/activ/scoreCourse${cno}${hid}`,
     });
 }
 
@@ -167,23 +158,6 @@ const revisehomework=(hid,htitle,hcontent,fileName,deadline2)=>{
 
 
 
-const download=async (hid,fileName)=>{
-    //console.log(hid);
-    //console.log(fileName);
-    let res = await requestUtil.Download2("/activ/commithomework/downhomework",hid,JSON.parse(sessionStorage.getItem("userInfo")).no,fileName)
-    if(res.data.code==200){
-        ElMessage({
-            type: 'success',
-            message: '下载成功!'
-        })
-        await initUserList();
-    }else{
-        ElMessage({
-            type: 'error',
-            message: res.data.msg,
-        })
-    }
-}
 
 </script>
 

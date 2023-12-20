@@ -41,4 +41,7 @@ public class Chat implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    @TableField(exist = false)
+    private String date2;
 }

@@ -52,6 +52,8 @@ public class HomeworkVO {
     private Integer unrevise;
 
     private String revisestatus;
+
+    private String isLaterevise;
     public HomeworkVO(Homeworkpublish homeworkpublish){
         this.no = homeworkpublish.getNo();
         this.hid = homeworkpublish.getHid();

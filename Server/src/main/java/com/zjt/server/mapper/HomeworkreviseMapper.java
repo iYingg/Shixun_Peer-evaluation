@@ -14,6 +14,8 @@ public interface HomeworkreviseMapper extends BaseMapper<Homeworkrevise> {
     void updateByRevise(int hid, String reviser, String commitsno, int score, String remark);
 
     void revoke(int hid, String reviser, String commitsno);
+
+    void insertByHomeworkrevise(int hid, String reviser, String commitsno);
 }
 
 

@@ -14,6 +14,8 @@ public interface HomeworkcommitMapper extends BaseMapper<Homeworkcommit> {
     void deleteByhidandSno(int hid, String sno);
 
     void insertByhomeworkCommit(Homeworkcommit homeworkcommit);
+
+    void updateFinalscore(Integer hid, String sno, Integer finalscore);
 }
 
 
